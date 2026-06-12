@@ -2,43 +2,36 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Phonics Level Up! (Direct Game)</title>
     <style>
         :root { --pink: #f8a5c2; --blue: #778beb; --bg: #fffbe6; --gold: #feca57; }
-        body { font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif; background-color: var(--bg); text-align: center; margin: 0; padding: 10px; overflow-x: hidden; }
+        body { font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif; background-color: var(--bg); text-align: center; margin: 0; padding: 10px; overflow-x: hidden; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         .container { max-width: 600px; margin: auto; padding: 25px; background: white; border-radius: 40px; box-shadow: 0 15px 0 #f0e68c; min-height: 90vh; display: flex; flex-direction: column; justify-content: space-between; }
         
-        /* 標題與五星成就 */
         .header { color: #54a0ff; font-size: 32px; font-weight: bold; margin-bottom: 5px; text-shadow: 2px 2px #e3f2fd; }
         .stars { font-size: 45px; color: var(--gold); margin-bottom: 15px; min-height: 55px; letter-spacing: 5px; }
         .victory-glow { animation: victoryPulse 1s infinite alternate; }
         @keyframes victoryPulse { from { transform: scale(1); } to { transform: scale(1.2); text-shadow: 0 0 20px #feca57; } }
 
-        /* 遊戲核心互動區 */
         .game-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .listen-btn { background: white; border: 3px solid #54a0ff; color: #54a0ff; border-radius: 30px; padding: 12px 40px; cursor: pointer; font-weight: bold; font-size: 22px; margin-bottom: 20px; transition: 0.2s; }
-        .listen-btn:active { background: #54a0ff; color: white; }
+        .listen-btn { background: white; border: 3px solid #54a0ff; color: #54a0ff; border-radius: 30px; padding: 12px 40px; cursor: pointer; font-weight: bold; font-size: 22px; margin-bottom: 20px; -webkit-appearance: none; }
 
-        /* 圓圈按鈕（粉紅、粉藍球球） */
         .choice-container { display: flex; justify-content: space-around; align-items: center; width: 100%; margin: 20px 0; }
-        .circle-btn { width: 160px; height: 160px; border-radius: 50%; border: none; font-size: 85px; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 10px 0 rgba(0,0,0,0.1); }
+        .circle-btn { width: 160px; height: 160px; border-radius: 50%; border: none; font-size: 85px; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 10px 0 rgba(0,0,0,0.1); -webkit-appearance: none; }
         .circle-btn.pink { background-color: var(--pink); }
         .circle-btn.blue { background-color: var(--blue); }
         .circle-btn:active { transform: translateY(6px); box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
 
-        /* 答對後跳出的大字 */
         #big-letter { font-size: 140px; color: #1dd1a1; font-weight: bold; margin: 10px 0; }
 
-        /* 下方功能控制區 */
         .action-area { margin-top: 20px; background: #f9f9f9; border-radius: 20px; padding: 20px; width: 100%; }
-        .action-btn { border-radius: 40px; border: none; padding: 15px 30px; font-size: 20px; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; font-weight: bold; }
+        .action-btn { border-radius: 40px; border: none; padding: 15px 30px; font-size: 20px; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; font-weight: bold; -webkit-appearance: none; }
         .rec-btn { background-color: #ff6b6b; box-shadow: 0 4px #ee5253; }
         .play-btn { background-color: #1dd1a1; box-shadow: 0 4px #10ac84; }
         .recording-text { color: #ff6b6b; font-weight: bold; margin: 10px; font-size: 20px; display: none; }
         
-        .next-btn { margin-top: 25px; border: none; background: #54a0ff; color: white; border-radius: 25px; padding: 12px 50px; font-size: 24px; cursor: pointer; font-weight: bold; box-shadow: 0 5px #2e86de; }
-        .next-btn:active { transform: translateY(3px); box-shadow: 0 2px #2e86de; }
+        .next-btn { margin-top: 25px; border: none; background: #54a0ff; color: white; border-radius: 25px; padding: 12px 50px; font-size: 24px; cursor: pointer; font-weight: bold; box-shadow: 0 5px #2e86de; -webkit-appearance: none; }
 
         .hidden { display: none !important; }
         .blink { animation: blinker 0.8s linear infinite; }
@@ -66,7 +59,9 @@
         <div id="feedback-area" class="hidden" style="width:100%;">
             <div id="big-letter"></div>
             <div class="action-area">
-                <button id="recBtn" class="action-btn rec-btn" onmousedown="startRec()" onmouseup="stopRec()" ontouchstart="startRec()" ontouchend="stopRec()">🎤 HOLD TO RECORD</button>
+                <button id="recBtn" class="action-btn rec-btn" 
+                        onmousedown="startRec(event)" onmouseup="stopRec(event)" 
+                        ontouchstart="startRec(event)" ontouchend="stopRec(event)">🎤 HOLD TO RECORD</button>
                 <button id="playRecBtn" class="action-btn play-btn hidden" onclick="playBack()">▶ MY VOICE</button>
             </div>
             <button class="next-btn" onclick="nextRound()">NEXT ➔</button>
@@ -80,21 +75,15 @@
     const lettersList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
     let currentLetter = '', score = 0, mediaRecorder, audioChunks = [], audioUrl;
 
-    // 直接出題與換題核心
     function nextRound() {
-        // 從 A-Z 隨機抽一個大寫字母當正解
         currentLetter = lettersList[Math.floor(Math.random() * lettersList.length)];
-
-        // 隨機抽另一個字母當誘答干擾項
         const others = lettersList.filter(l => l !== currentLetter);
         const distractorLetter = others[Math.floor(Math.random() * others.length)];
 
-        // 亂數決定正確答案在左邊還是右邊
         const options = [currentLetter, distractorLetter].sort(() => Math.random() - 0.5);
         document.getElementById('opt1').innerText = options[0];
         document.getElementById('opt2').innerText = options[1];
         
-        // 重置所有介面元素
         document.getElementById('opt1').style.opacity = "1";
         document.getElementById('opt2').style.opacity = "1";
         document.getElementById('feedback-area').classList.add('hidden');
@@ -104,138 +93,9 @@
         document.getElementById('star-display').classList.remove('victory-glow');
         updateStars();
         
-        // 進入新一輪時自動呼叫語音發音
         setTimeout(playSound, 300);
     }
 
-    // 發音：直接唸出該字母音
-    function playSound() { speak(currentLetter); }
-    function speak(t) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = 0.7; window.speechSynthesis.speak(m); }
-
-    // 檢查答案
-    function checkAnswer(el) {
-        if (el.innerText === currentLetter) {
-            score++;
-            updateStars();
-            document.getElementById('big-letter').innerText = currentLetter;
-            document.getElementById('quiz-area').classList.add('hidden');
-            document.getElementById('feedback-area').classList.remove('hidden');
-            
-            // 滿5題累積大獎勵：觸發勝利慶祝樂章，否則播放普通過關叮咚音
-            if (score > 0 && score % 5 === 0) {
-                document.getElementById('star-display').classList.add('victory-glow');
-                playVictoryMusic();
-            } else {
-                playSimpleDing();
-            }
-        } else {
-            speak("Try again");
-            el.style.opacity = "0.3"; // 選錯的圓圈直接半透明化
-        }
-    }
-
-    function updateStars() {
-        let s = (score % 5 === 0 && score !== 0) ? 5 : score % 5;
-        document.getElementById('star-display').innerText = "★".repeat(s) + "☆".repeat(5-s);
-    }
-
-    // Final Fantasy 經典 9 音符過關慶祝樂章 (Web Audio API 模擬生成)
-    function playVictoryMusic() {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const melody = [
-            {f: 523, d: 0.15}, {f: 523, d: 0.15}, {f: 523, d: 0.15}, {f: 523, d: 0.4},
-            {f: 415, d: 0.4}, {f: 466, d: 0.4}, {f: 523, d: 0.2}, {f: 466, d: 0.15}, {f: 523, d: 1.0}
-        ];
-        let now = ctx.currentTime;
-        melody.forEach(n => {
-            const o = ctx.createOscillator(); const g = ctx.createGain();
-            o.type = 'square'; o.frequency.value = n.f; o.connect(g); g.connect(ctx.destination);
-            g.gain.setValueAtTime(0.05, now); g.gain.exponentialRampToValueAtTime(0.001, now + n.d);
-            o.start(now); o.stop(now + n.d); now += n.d;
-        });
-    }
-
-    // 答對單題的基礎小叮咚聲
-    function playSimpleDing() {
-        const ctx = new AudioContext(); const o = ctx.createOscillator(); const g = ctx.createGain();
-        o.connect(g); g.connect(ctx.destination); o.frequency.setValueAtTime(523, ctx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(659, ctx.currentTime + 0.1);
-        g.gain.setValueAtTime(0.05, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        o.start(); o.stop(ctx.currentTime + 0.3);
-    }
-
-    // 麥克風錄音回放串接
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            audioUrl = URL.createObjectURL(audioBlob);
-            document.getElementById('playRecBtn').classList.remove('hidden');
-        };
-    }).catch(err => console.log("Mic configuration loaded."));
-
-    function startRec() { audioChunks = []; mediaRecorder.start(); document.getElementById('recording-status').style.display = 'block'; }
-    function stopRec() { mediaRecorder.stop(); document.getElementById('recording-status').style.display = 'none'; }
-    function playBack() { new Audio(audioUrl).play(); }
-
-    // 網頁啟動時直接出題，繞過選單頁面
-    window.onload = nextRound;
-</script>
-</body>
-</html>
-        <div id="quiz-area" class="choice-container">
-            <button id="opt1" class="circle-btn pink" onclick="checkAnswer(this)"></button>
-            <button id="opt2" class="circle-btn blue" onclick="checkAnswer(this)"></button>
-        </div>
-
-        <div id="recording-status" class="recording-text blink">🔴 RECORDING...</div>
-
-        <div id="feedback-area" class="hidden" style="width:100%;">
-            <div id="big-letter"></div>
-            <div class="action-area">
-                <button id="recBtn" class="action-btn rec-btn" onmousedown="startRec()" onmouseup="stopRec()" ontouchstart="startRec()" ontouchend="stopRec()">🎤 HOLD TO RECORD</button>
-                <button id="playRecBtn" class="action-btn play-btn hidden" onclick="playBack()">▶ MY VOICE</button>
-            </div>
-            <button onclick="nextRound()" style="margin-top:25px; border:none; background:#54a0ff; color:white; border-radius:25px; padding:12px 50px; font-size:24px; cursor:pointer; font-weight:bold; box-shadow: 0 5px #2e86de;">NEXT ➔</button>
-        </div>
-    </div>
-
-    <div style="color: #bbb; font-size: 14px; font-weight: bold;">DIRECT CHALLENGE MODE</div>
-</div>
-
-<script>
-    const lettersList = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    let currentLetter = '', score = 0, mediaRecorder, audioChunks = [], audioUrl;
-
-    function nextRound() {
-        // 隨機選一個英文字母當題目
-        currentLetter = lettersList[Math.floor(Math.random() * lettersList.length)];
-
-        // 隨機抓另一個字母當錯誤選項
-        const others = lettersList.filter(l => l !== currentLetter);
-        const distractorLetter = others[Math.floor(Math.random() * others.length)];
-
-        // 隨機洗牌左右位置
-        const options = [currentLetter, distractorLetter].sort(() => Math.random() - 0.5);
-        document.getElementById('opt1').innerText = options[0];
-        document.getElementById('opt2').innerText = options[1];
-        
-        // 還原按鈕透明度與重置UI
-        document.getElementById('opt1').style.opacity = "1";
-        document.getElementById('opt2').style.opacity = "1";
-        document.getElementById('feedback-area').classList.add('hidden');
-        document.getElementById('quiz-area').classList.remove('hidden');
-        document.getElementById('playRecBtn').classList.add('hidden');
-        document.getElementById('recording-status').style.display = 'none';
-        document.getElementById('star-display').classList.remove('victory-glow');
-        updateStars();
-        
-        // 自動播放聲音
-        setTimeout(playSound, 300);
-    }
-
-    // 發音：只唸大寫字母本身
     function playSound() { speak(currentLetter); }
     function speak(t) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(t); m.lang = 'en-US'; m.rate = 0.7; window.speechSynthesis.speak(m); }
 
@@ -247,7 +107,6 @@
             document.getElementById('quiz-area').classList.add('hidden');
             document.getElementById('feedback-area').classList.remove('hidden');
             
-            // 每 5 分播放 Final Fantasy 勝利音樂，否則播普通叮咚
             if (score > 0 && score % 5 === 0) {
                 document.getElementById('star-display').classList.add('victory-glow');
                 playVictoryMusic();
@@ -256,7 +115,7 @@
             }
         } else {
             speak("Try again");
-            el.style.opacity = "0.3"; // 點錯了就變淡
+            el.style.opacity = "0.3";
         }
     }
 
@@ -265,7 +124,6 @@
         document.getElementById('star-display').innerText = "★".repeat(s) + "☆".repeat(5-s);
     }
 
-    // Final Fantasy 勝利音樂模擬 (Web Audio API)
     function playVictoryMusic() {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const melody = [
@@ -282,29 +140,55 @@
     }
 
     function playSimpleDing() {
-        const ctx = new AudioContext(); const o = ctx.createOscillator(); const g = ctx.createGain();
+        const ctx = new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain();
         o.connect(g); g.connect(ctx.destination); o.frequency.setValueAtTime(523, ctx.currentTime);
         o.frequency.exponentialRampToValueAtTime(659, ctx.currentTime + 0.1);
         g.gain.setValueAtTime(0.05, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
         o.start(); o.stop(ctx.currentTime + 0.3);
     }
 
-    // 麥克風錄音組件
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    // 🌟 跨平台錄音核心初始化
+    function initMediaRecorder(stream) {
+        // 自動偵測裝置支援的格式 (修正 iOS 格式報錯問題)
+        let options = { mimeType: 'audio/webm' };
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options = { mimeType: 'audio/mp4' }; // iOS 常用替代格式
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                options = {}; // 讓系統自己抓預設
+            }
+        }
+        
+        mediaRecorder = new MediaRecorder(stream, options);
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
             audioUrl = URL.createObjectURL(audioBlob);
             document.getElementById('playRecBtn').classList.remove('hidden');
         };
-    }).catch(err => console.log("Mic permission deferred."));
+    }
 
-    function startRec() { audioChunks = []; mediaRecorder.start(); document.getElementById('recording-status').style.display = 'block'; }
-    function stopRec() { mediaRecorder.stop(); document.getElementById('recording-status').style.display = 'none'; }
-    function playBack() { new Audio(audioUrl).play(); }
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        initMediaRecorder(stream);
+    }).catch(err => console.log("Mic access delayed or native limitation."));
 
-    // 打開網頁直接自動執行第一關
+    // 🌟 防止手機端長按彈出選單干擾錄音
+    function startRec(e) { 
+        if(e) e.preventDefault();
+        if (!mediaRecorder || mediaRecorder.state === "recording") return;
+        audioChunks = []; 
+        mediaRecorder.start(); 
+        document.getElementById('recording-status').style.display = 'block'; 
+    }
+    
+    function stopRec(e) { 
+        if(e) e.preventDefault();
+        if (!mediaRecorder || mediaRecorder.state !== "recording") return;
+        mediaRecorder.stop(); 
+        document.getElementById('recording-status').style.display = 'none'; 
+    }
+    
+    function playBack() { if(audioUrl) { new Audio(audioUrl).play(); } }
+
     window.onload = nextRound;
 </script>
 </body>
